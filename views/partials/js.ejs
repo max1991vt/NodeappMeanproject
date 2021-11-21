@@ -1,0 +1,336 @@
+
+    <!-- jQuery -->
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="/vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="/vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="/vendors/iCheck/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="/vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="/vendors/Flot/jquery.flot.js"></script>
+    <script src="/vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="/vendors/Flot/jquery.flot.time.js"></script>
+    <script src="/vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="/vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="/vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="/vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="/vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/vendors/moment/min/moment.min.js"></script>
+    <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="/build/js/custom.min.js"></script>
+	<% if(js == 1 ){ %>
+    <!-- change to slug -->
+    <script>
+        function ChangeToSlug(name_title,name_slug)
+        {
+            var title, slug;
+        
+            //Lấy text từ thẻ input title 
+            title = document.getElementById(name_title).value;
+        
+            //Đổi chữ hoa thành chữ thường
+            slug = title.toLowerCase();
+        
+            //Đổi ký tự có dấu thành không dấu
+            slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
+            slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
+            slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i');
+            slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o');
+            slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
+            slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
+            slug = slug.replace(/đ/gi, 'd');
+            //Xóa các ký tự đặt biệt
+            slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
+            //Đổi khoảng trắng thành ký tự gạch ngang
+            slug = slug.replace(/ /gi, "-");
+            //Đổi nhiều ký tự gạch ngang liên tiếp thành 1 ký tự gạch ngang
+            //Phòng trường hợp người nhập vào quá nhiều ký tự trắng
+            slug = slug.replace(/\-\-\-\-\-/gi, '-');
+            slug = slug.replace(/\-\-\-\-/gi, '-');
+            slug = slug.replace(/\-\-\-/gi, '-');
+            slug = slug.replace(/\-\-/gi, '-');
+            //Xóa các ký tự gạch ngang ở đầu và cuối
+            slug = '@' + slug + '@';
+            slug = slug.replace(/\@\-|\-\@|\@/gi, '');
+            //In slug ra textbox có id “slug”
+            document.getElementById(name_slug).value = slug;
+        }
+    </script>
+
+    <!-- Gắn Ckeditor -->
+
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script>CKEDITOR.replace('content');</script>
+
+    <!-- Submit form -->
+
+    <script>
+        $(document).ready(function(){
+            $('#submitForm').on('submit', function(e){
+                e.preventDefault();
+        
+                // khai báo dữ liệu
+                var data, name, slug, price, parents, content, username, password, 
+                email, role, phone, flag=1, err='';
+        
+                // xét module
+                var name_module = '<%=name_module%>';
+        
+                // lấy dữ liệu
+                name = $('#name').val();
+        
+                if( name_module == 'product' )
+                {
+                    slug = $('#slug').val();
+                    price = $('#price').val();
+                    parents = $('#parents').val();
+                    
+                    content = CKEDITOR.instances['content'].getData();
+        
+                    // // kiểm tra dữ liệu
+                    if(name == '')
+                    {
+                        flag=0;
+                        $('.error_name').text('Tên không được rỗng');
+                    }
+                    else
+                    {
+                        $('.error_name').hide();
+                    }
+        
+                    if(slug == '')
+                    {
+                        flag=0;
+                        $('.error_slug').text('Slug không được rỗng');
+                    }
+                    else
+                    {
+                        $('.error_slug').hide();
+                    }
+        
+                    data = {
+                        'name': name,
+                        'slug': slug,
+                        'price': price,
+                        'parents': parents,
+                        'content': content
+                    };
+                }
+                else if( name_module == 'user' )
+                {
+                    name = $('#name').val();
+                    username = $('#username').val();
+                    password = $('#password').val();
+                    email = $('#email').val();
+                    phone = $('#phone').val();
+                    role = $('#role').val();
+        
+                    // kiểm tra dữ liệu
+                    if(username == '')
+                    {
+                        flag=0;
+                        $('.error_username').text('Tên Đăng Nhập không được rỗng');
+                    }
+                    else
+                    {
+                        $('.error_username').hide();
+                    }
+        
+                    if(password == '')
+                    {
+                        flag=0;
+                        $('.error_password').text('Mật Khẩu không được rỗng');
+                    }
+                    else
+                    {
+                        $('.error_password').hide();
+                    }
+        
+                    if(role == '')
+                    {
+                        flag=0;
+                        $('.error_role').text('Vui lòng chọn vai trò');
+                    }
+                    else
+                    {
+                        $('.error_role').hide();
+                    }
+        
+                    data = {
+                        'name': name,
+                        'username': username,
+                        'password': password,
+                        'email': email,
+                        'phone': phone,
+                        'role': role
+                    };
+                }    
+        
+                // tổng hợp
+                if(flag == 1)
+                {
+                    // gửi ajax
+                    $.ajax({
+                        url: '/admin/<%=name_module%>/formProcess',
+                        type: 'POST',
+                        data: data,
+                        success: function(results){
+                            if(results.kq == 1){
+                                // chuyển trang
+                                window.location.href = '/admin/<%=name_module%>/index';
+                                
+                            }else{
+                                alert( results.err );
+                                console.log(results.err);
+                            }
+                            
+                        }
+                    })
+                  
+                    return false;
+                }
+            })
+        })
+        </script>
+
+<% } %>
+
+<script>
+    function js_delete(name = '', id = '')
+    {
+        $('.modal-body #name').text(name);
+        $('.modal-body #delete_id').val(id);
+        
+    }
+
+    function xoaNgay(){
+        var id = $('#delete_id').val();
+
+        //gửi ajax
+        if(id !=''){
+            $.ajax({
+                url: '/admin/<%-name_module%>/delete',
+                type: 'POST',
+                        data:{ 'id' : id },
+                        success: function(results) {
+                            if(results.kq == 1){
+                                $('#delete_id_' + id).remove();
+                            }else{
+                                alert(results.err);
+                            }
+                        }
+            });
+        }else{
+            alert('Dữ liệu không hợp lệ');
+        }
+    };
+
+
+        function js_status(id=0)
+        {
+        var status = $('#status_' + id).prop('checked');
+
+         //gửi ajax
+         if(id !=''){
+            $.ajax({
+                url: '/admin/<%-name_module%>/status',
+                type: 'POST',
+                        data:{ 'id' : id , 'status' : status},
+                        success: function(results) {
+                            if(results.kq == 1){
+                                alert(results.msg);
+                            }else{
+                                alert(results.err);
+                            }
+                        }
+            });
+            return false;
+        }else{
+            alert('Dữ liệu không hợp lệ');
+        }
+
+        }
+
+</script>
+
+
+
+
+
+
+<!-- Thêm ảnh -->
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Cập nhật ảnh</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-md-8">
+                  <label for="">Chọn file</label>
+                  <input type="file">
+              </div>
+              <div class="col-md-4">
+                  <img src="/uploads/abc.jpg" class = "img-responsive">
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Lưu lại</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Xóa -->
+
+  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel2">Thông báo</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>Bạn chắc chắn muốn xóa?</h6>
+          <input type="hidden" id = "delete_id"
+          <p><b  id="name" class="text-danger"></b></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" onclick="xoaNgay()" data-dismiss="modal">Xóa ngay</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+          
+        </div>
+
+      </div>
+    </div>
+  </div>
